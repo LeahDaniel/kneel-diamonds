@@ -1,4 +1,5 @@
-import { getSizes, setSize } from "./database.js"
+import { getSizes, setSize } from "./dataAccess.js"
+import { KneelDiamonds } from "./KneelDiamonds.js"
 
 const sizes = getSizes()
 
@@ -7,6 +8,12 @@ document.addEventListener(
     (event) => {
         if (event.target.name === "size") {
             setSize(parseInt(event.target.value))
+            const mainContainer = document.querySelector("#container")
+            const renderAllHTML = () => {
+                mainContainer.innerHTML = KneelDiamonds()
+            }
+            console.log("State of data has changed. Regenerating HTML...")
+            renderAllHTML() 
         }
     }
 )

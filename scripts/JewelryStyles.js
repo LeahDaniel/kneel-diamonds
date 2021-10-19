@@ -1,4 +1,5 @@
-import { getStyles, setStyle } from "./database.js"
+import { getStyles, setStyle } from "./dataAccess.js"
+import { KneelDiamonds } from "./KneelDiamonds.js"
 
 const styles = getStyles()
 
@@ -7,6 +8,12 @@ document.addEventListener(
     (event) => {
         if (event.target.name === "style") {
             setStyle(parseInt(event.target.value))
+            const mainContainer = document.querySelector("#container")
+            const renderAllHTML = () => {
+                mainContainer.innerHTML = KneelDiamonds()
+            }
+            console.log("State of data has changed. Regenerating HTML...")
+            renderAllHTML() 
         }
     }
 )
