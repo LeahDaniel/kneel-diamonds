@@ -1,5 +1,5 @@
 import { getMetals, setMetal } from "./dataAccess.js"
-import { KneelDiamonds } from "./KneelDiamonds.js"
+import { getOrdersBuilder } from "./dataAccess.js"
 
 const metals = getMetals()
 
@@ -8,25 +8,28 @@ document.addEventListener(
     (event) => {
         if (event.target.name === "metal") {
             setMetal(parseInt(event.target.value))
-            const mainContainer = document.querySelector("#container")
-            const renderAllHTML = () => {
-                mainContainer.innerHTML = KneelDiamonds()
-            }
-            console.log("State of data has changed. Regenerating HTML...")
-            renderAllHTML() 
         }
     }
 )
 
 
 export const Metals = () => {
+    const orderBuilder = getOrdersBuilder()
     let html = "<ul>"
 
-    for (const metal of metals) {
-        html += `<li>
+    const listItems = metals.map(metal => {
+        if (metal.id === orderBuilder.metalId) {
+            return `<li>
+            <input type="radio" name="metal" value="${metal.id}" checked/> ${metal.metal}
+        </li>`
+        } else {
+            return `<li>
             <input type="radio" name="metal" value="${metal.id}" /> ${metal.metal}
         </li>`
-    }
+        }
+    })
+    // Join all of the strings in the array into a single string
+    html += listItems.join("")
 
     html += "</ul>"
     return html

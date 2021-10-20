@@ -1,6 +1,7 @@
 import {state} from "./database.js"
 
 const database = state()
+const newCustomEvent = new CustomEvent("stateChanged")
 
 export const getMetals = () => {
     return database.metals.map(metal => ({...metal}))
@@ -22,16 +23,23 @@ export const getOrders = () => {
     return database.customOrders.map(customOrder => ({...customOrder}))
 }
 
+export const getOrdersBuilder = () => {
+    return {...database.orderBuilder}
+}
+
 export const setMetal = (id) => {
     database.orderBuilder.metalId = id
+    document.dispatchEvent(newCustomEvent)   
 }
 
 export const setSize = (id) => {
     database.orderBuilder.sizeId = id
+    document.dispatchEvent(newCustomEvent)    
 }
 
 export const setStyle = (id) => {
     database.orderBuilder.styleId = id
+    document.dispatchEvent(newCustomEvent)   
 }
 
 export const setOption = (id) => {
@@ -59,6 +67,7 @@ export const addCustomOrder = () => {
     // Reset the temporary state for user choices
     database.orderBuilder = {}
 
+    
     // Broadcast a notification that permanent state has changed
-    document.dispatchEvent(new CustomEvent("stateChanged"))
+    document.dispatchEvent(newCustomEvent)
 }
